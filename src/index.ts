@@ -2,17 +2,20 @@ import express,{Express, NextFunction, Request,Response} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import HttpException from './exception/HttpException';
 import errorMiddleware from './middlewares/error.middleware';
-import * as userController from './controller/user'
+import * as userController from './controller/user';
 import mongoose from "mongoose";
+import morgan from "morgan";
 
 const {NOT_FOUND} = StatusCodes
 
 const app:Express=express();
+//服务器端显示日志的中间件
+app.use(morgan("dev"));
 
 app.use(express.json());
 
-app.get('/',(req:Request,res:Response)=>{
-    res.send(req.body);
+app.get('/',(_req:Request,res:Response)=>{
+    res.json({message:'Welcome to user Restful Api'});
 })
 
 app.post('/user/userRegist',userController.userRegister)
