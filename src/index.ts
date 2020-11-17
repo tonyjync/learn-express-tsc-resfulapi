@@ -34,7 +34,7 @@ app.use(errorMiddleware);
 const port:any=process.env.PORT || 6060;
 
 const main=async () => {
-    await mongoose.connect("mongodb+srv://testapi:testapi@todo.xhisi.mongodb.net/todo?retryWrites=true&w=majority", {
+    await mongoose.connect("mongodb+srv://testapi:*****@todo.xhisi.mongodb.net/todo?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
