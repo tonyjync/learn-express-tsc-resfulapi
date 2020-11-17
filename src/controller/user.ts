@@ -4,7 +4,7 @@ import HttpException from "../exception/HttpException";
 import { validateRegisterInput } from "../utils/validator";
 import User, { IUserDocument } from "../models/User";
 
-export const userRegister= async (req:Request,res:Response,next:NextFunction)=>{
+export const userRegister= async (req:Request,res:Response,next:NextFunction): Promise<void>=>{
     try{
     //解析提交参数
     const {username,email,password,confirmPassword} =req.body;
