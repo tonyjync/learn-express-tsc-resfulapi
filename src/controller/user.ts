@@ -3,6 +3,17 @@ import { StatusCodes } from "http-status-codes";
 import HttpException from "../exception/HttpException";
 import { validateRegisterInput } from "../utils/validator";
 import User, { IUserDocument } from "../models/User";
+// import bcrypt from 'bcryptjs';
+
+export const userLogin = async(req:Request,res:Response,next:NextFunction):Promise<void>=>{
+    try{
+
+    }catch(error){
+        next(error);
+    }
+    res.json(req.body)
+}
+
 
 export const userRegister= async (req:Request,res:Response,next:NextFunction): Promise<void>=>{
     try{
@@ -18,24 +29,28 @@ export const userRegister= async (req:Request,res:Response,next:NextFunction): P
 
     //判断用户名是否存在
     const user=await User.findOne({username});
-    console.dir(user)
     if(user){
         throw new HttpException(StatusCodes.UNPROCESSABLE_ENTITY,"Username is taken",{
             username:"The username is taken"
         })
     }
+    //密码加密码
+    // const bcryptpassword=await bcrypt.hash(password,10);
+    //换成了实例钩子
     //创建数据库记录
     const newUser: IUserDocument  = new User({username,email,password});
     //保存到mongoo数据库
-    const resUser = await newUser.save();
+    const resUser: IUserDocument  = await newUser.save();
+    const token:string=resUser.generateToken();
     //返回数据到前台
     res.json({
         success:true,
-        user:resUser._doc
+        data:{
+            token,
+            user:resUser._doc
+        }
     })
     }catch(error){
         next(error);
     }
-    
-
 }
