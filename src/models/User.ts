@@ -16,6 +16,7 @@ const userSchema:Schema = new Schema({
 },{ timestamps: true});
 //定义实例方法，生成token 需要配置JWT_SECRET_KEY 钥匙和EXPIRES_IN token有效期
 userSchema.methods.generateToken=function():string{
+    
  return jwt.sign({id:this.id},process.env.JWT_SECRET_KEY!,{expiresIn:process.env.EXPIRES_IN});
 }
 
