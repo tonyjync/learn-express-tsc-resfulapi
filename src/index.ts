@@ -3,9 +3,11 @@ import { StatusCodes } from 'http-status-codes';
 import HttpException from './exception/HttpException';
 import errorMiddleware from './middlewares/error.middleware';
 import * as userController from './controller/user';
+import * as postController from './controller/post';
 import dotenv from "dotenv"
 import mongoose from "mongoose";
 import morgan from "morgan";
+import checkAuthMiddleware from './middlewares/check.auth.middleware';
 
 const { NOT_FOUND } = StatusCodes
 
@@ -21,9 +23,18 @@ app.get('/', (_req: Request, res: Response) => {
 })
 
 app.post('/user/userRegist', userController.postRegister)
-
 app.post('/user/userLogin', userController.postLogin)
 
+// app.get('/posts', postController.getPosts)
+// app.post('/posts', postController.createPosts)
+app
+    .route("/posts")
+    .get(postController.getPosts)
+    .post(checkAuthMiddleware, postController.createPost);
+
+app
+    .route("/posts/:id")
+    .get(postController.getPost)
 
 //访问路径不存抛出异常
 app.use((_req: Request, _res: Response, next: NextFunction) => {
